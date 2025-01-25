@@ -1,0 +1,100 @@
+﻿@model List<Duty>
+
+@{
+    ViewBag.Title = "Task List";
+}
+<h2 style="text-align: center">Task List</h2>
+<div class="text-end" style="padding-bottom:20px">
+    <a asp-controller="Task" asp-action="Create" class="btn btn-success">New Task</a>
+</div>
+
+
+<table class="table table-hovered table-bordered table-sm">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Due Date
+            </th>
+            <th>
+                Status
+            </th>
+            <th style="text-align: center">
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Description</td>
+                <td>@item.DueDate</td>
+                <td>@((StatusType)item.StatusId)</td>
+                <td style="text-align: center">
+                    <a asp-action="Update" asp-controller="Task" class="btn btn-warning" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-controller="Task" class="btn btn-danger" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Fetch token from cookies
+            function getCookie(name) {
+                let cookieArr = document.cookie.split(";");
+                for(let i = 0; i < cookieArr.length; i++) {
+                    let cookiePair = cookieArr[i].split("=");
+                    if(name == cookiePair[0].trim()) {
+                        return decodeURIComponent(cookiePair[1]);
+                    }
+                }
+                return null;
+            }
+
+            let tokenString = getCookie("jwtToken");
+
+            // Fetch task list
+            $.ajax({
+                url: '/Task/Index',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + tokenString
+                },
+                success: function (response) {
+                    console.log('Success:', response);
+                    // Update the task list with the response data
+                    var taskList = $('#taskList');
+                    taskList.empty();
+                    response.forEach(function(task) {
+                        taskList.append(`
+                            <tr>
+                                <td>${task.Name}</td>
+                                <td>${task.Description}</td>
+                                <td>${task.DueDate}</td>
+                                <td>${task.Status}</td>
+                                <td style="text-align: center">
+                                    <a href="/Task/Update/${task.Id}" class="btn btn-warning">Edit</a>
+                                    <a href="/Task/Delete/${task.Id}" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        `);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    </script>
+}

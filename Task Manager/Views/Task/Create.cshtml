@@ -1,0 +1,43 @@
+﻿@model DutyCreateModel
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="~/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <div class="container my-2">
+        <form asp-action="Create" asp-controller="Task" method="post">
+            <div class="mb-3">
+                <label>Name</label>
+                <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                <input asp-for="@Model.Name" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label>Description</label>
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+                <input asp-for="@Model.Description" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label>Due Date</label>
+                <span asp-validation-for="@Model.DueDate" class="text-danger"></span>
+                <input asp-for="@Model.DueDate" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label>Status</label>
+                <span asp-validation-for="@Model.StatusId" class="text-danger"></span>
+                <select class="form-select" asp-items="@Model.Status" asp-for="@Model.StatusId">
+                    <option value="" disabled selected>Select status</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger">
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>
