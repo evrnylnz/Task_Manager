@@ -1,0 +1,1 @@
+In the project I was able to create authorization token for the user but not able to use it for authentication. I have intentionally did not remove the code so you can have an insgiht of what I've tried. 
