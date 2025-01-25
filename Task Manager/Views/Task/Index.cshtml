@@ -50,7 +50,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Fetch token from cookies
             function getCookie(name) {
                 let cookieArr = document.cookie.split(";");
                 for(let i = 0; i < cookieArr.length; i++) {
@@ -64,7 +63,6 @@
 
             let tokenString = getCookie("jwtToken");
 
-            // Fetch task list
             $.ajax({
                 url: '/Task/Index',
                 type: 'GET',
@@ -73,7 +71,6 @@
                 },
                 success: function (response) {
                     console.log('Success:', response);
-                    // Update the task list with the response data
                     var taskList = $('#taskList');
                     taskList.empty();
                     response.forEach(function(task) {
